@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polkdot-full-node 
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: polkdot-full-node
+  strategy: 
+    rollingUpdate:
+      maxSurge: 1 
+      maxUnavailable: 1 
+    type: RollingUpdate
+  template: 
+    metadata:
+      labels:
+        app: polkdot-full-node 
+    spec:
+      containers:
+      - name: polkdot-full-node
+        image: "chevdor/polkadot:0.3.14" 
+        args: 
+        - polkadot
+        - --chain 
+        - alex
+        - --name 
+        - liufan-gke
+        imagePullPolicy: Always
+        ports: 
+        - name: full-node 
+          containerPort: 9933
+        volumeMounts:
+        - mountPath: /my/local/folder/
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: full-node-claim
