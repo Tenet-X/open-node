@@ -22,6 +22,7 @@ steps:
     - '-c'
     - |
       eval "$(ssh-agent -s)"
+      chmod 600 /pri_key
       ssh-add /pri_key
 
       git config --global user.email "charles_liuf@hotmail.com"
