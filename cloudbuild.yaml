@@ -30,6 +30,7 @@ steps:
 
       git clone git@github.com:Tenet-X/open-node.git
       cd open-node
+      git checkout dev
 
       sed -i'' -e  "s/YOUR_PROJECT_ID/${_PROJECT_ID}/g" terraform.tfvars
 
