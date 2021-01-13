@@ -21,7 +21,7 @@ steps:
     - '-xe'
     - '-c'
     - |
-      git clone git@github.com:Tenet-X/open-node.git
+      git clone https://github.com/Tenet-X/open-node.git
       cd open-node
       git checkout dev
 
