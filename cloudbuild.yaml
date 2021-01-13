@@ -21,13 +21,6 @@ steps:
     - '-xe'
     - '-c'
     - |
-      eval "$(ssh-agent -s)"
-      chmod 600 /pri_key
-      ssh-add /pri_key
-
-      git config --global user.email "charles_liuf@hotmail.com"
-      git config --global user.name "Open Node Platform Installer"
-
       git clone git@github.com:Tenet-X/open-node.git
       cd open-node
       git checkout dev
