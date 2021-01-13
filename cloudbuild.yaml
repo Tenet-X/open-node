@@ -33,3 +33,5 @@ steps:
 
       gcloud container clusters get-credentials $(terraform output kubernetes_cluster_name) --region $(terraform output region)
       kubectl apply -f k8s/
+  waitFor:
+    - build-install-image
