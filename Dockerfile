@@ -33,7 +33,6 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
     apt-get update && \
     apt-get install -y google-cloud-sdk
 
-ADD key/open-node ./pri_key
-RUN mkdir ~/.ssh && \
-    touch ~/.ssh/known_hosts && \
-    ssh-keyscan github.com >> ~/.ssh/known_hosts
+#RUN mkdir ~/.ssh && \
+#    touch ~/.ssh/known_hosts && \
+#    ssh-keyscan github.com >> ~/.ssh/known_hosts
