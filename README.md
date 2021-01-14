@@ -1,6 +1,11 @@
 # open-node
+https://github.com/Phala-Network/phala-docker     
 
-## Use cloud build (recommend)
+https://telemetry.polkadot.io/#list/Polkadot
+
+---
+## ENV Install (GKE + Chain Node)
+### Use cloud build (recommend)
 ```
 gcloud init
 gcloud auth application-default login
@@ -11,7 +16,7 @@ export PROJECT_ID=<YOUR PROJECT ID>
 gcloud builds submit --substitutions=_PROJECT_ID=${PROJECT_ID}
 ```
 
-## Use terraform
+### Use terraform
 ```
 export PROJECT_ID=<YOUR PROJECT ID>
 sed -i'' -e  "s/YOUR_PROJECT_ID/${PROJECT_ID}/g" terraform.tfvars
@@ -21,5 +26,27 @@ terraform plan -out=terraform.tfplan
 terraform apply terraform.tfplan
 
 gcloud container clusters get-credentials $(terraform output kubernetes_cluster_name) --region $(terraform output region)
+kubectl apply -f k8s/
+```
+## Add New Chain Node
+### Modify Key Config Args
+PVC Name mapping to Chain Node  
+open-node/k8s/pvc.yaml
+```
+metadata:
+  name: *****
+```
+Chain Node Name(Phala)
+```
+containers:
+    - name: junhash-phala
+    image: "phalanetwork/phala-poc3-node"
+    imagePullPolicy: Always
+    env:
+        - name: NODE_NAME
+        value: "******"
+```
+### Start New Node
+```
 kubectl apply -f k8s/
 ```
