@@ -21,7 +21,7 @@ steps:
     - '-xe'
     - '-c'
     - |
-      git clone git@github.com:Tenet-X/open-node.git
+      git clone https://github.com/Tenet-X/open-node.git
       cd open-node
       git checkout dev
 
@@ -32,4 +32,7 @@ steps:
       terraform apply -auto-approve terraform.tfplan
 
       gcloud container clusters get-credentials $(terraform output kubernetes_cluster_name) --region $(terraform output region)
-      kubectl apply -f k8s/
+      kubectl apply -f k8s/pvc.yaml
+      kubectl apply -f k8s/deployment.yaml
+  waitFor:
+    - build-install-image

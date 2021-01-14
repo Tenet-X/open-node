@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: polkdot-phala-node
+  name: polkdot-full-node
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: polkdot-phala-node
+      app: polkdot-full-node
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,11 +15,17 @@ spec:
   template:
     metadata:
       labels:
-        app: polkdot-phala-node
+        app: polkdot-full-node
     spec:
       containers:
-      - name: polkdot-phala-node
-        image: "phalanetwork/phala-poc3-node"
+      - name: polkdot-full-node
+        image: "chevdor/polkadot:0.3.14"
+        args:
+        - polkadot
+        - --chain
+        - alex
+        - --name
+        - liufan-gke
         imagePullPolicy: Always
         ports:
         - name: full-node
