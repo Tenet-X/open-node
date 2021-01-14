@@ -36,7 +36,8 @@ open-node/k8s/pvc.yaml
 metadata:
   name: *****
 ```
-Chain Node Name(Phala)
+Chain Node Name(Phala)   
+k8s/deployment.yaml
 ```
 containers:
     - name: junhash-phala
