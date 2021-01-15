@@ -35,6 +35,7 @@ steps:
       terraform plan -out=terraform.tfplan
       terraform apply -auto-approve terraform.tfplan
 
+      cd ..
       gcloud container clusters get-credentials $(terraform output kubernetes_cluster_name) --region $(terraform output region)
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/deployment.yaml
