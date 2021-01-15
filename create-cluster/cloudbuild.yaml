@@ -1,12 +1,8 @@
 timeout: 3600s # 1-hr
 tags:
   - open-node-platform
-substitutions:
-  _PROJECT_ID: ${PROJECT_ID}
-  _GCP_REGION: ${GCP_REGION}
-  _NODE_NAME: ${NODE_NAME}
 steps:
-- name: "gcr.io/${PROJECT_ID}/open-node-platform-installer"
+- name: "gcr.io/${_PROJECT_ID}/open-node-platform-installer"
   id: "create-cluster"
   entrypoint: 'bash'
   args:
