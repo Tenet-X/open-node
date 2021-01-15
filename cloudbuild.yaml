@@ -3,6 +3,8 @@ tags:
   - open-node-platform
 substitutions:
   _PROJECT_ID: ${PROJECT_ID}
+  _GCP_REGION: ${GCP_REGION}
+  _NODE_NAME: ${NODE_NAME}
 options:
   substitution_option: 'ALLOW_LOOSE'
 steps:
@@ -26,7 +28,11 @@ steps:
       git checkout dev
 
       sed -i'' -e  "s/YOUR_PROJECT_ID/${_PROJECT_ID}/g" terraform.tfvars
+      sed -i'' -e  "s/GCP_REGION/${_GCP_REGION}/g" terraform.tfvars
+      sed -i'' -e  "s/NODE_NAME/${_NODE_NAME}/g" k8s/deployment.yaml
+      sed -i'' -e  "s/NODE_NAME/${_NODE_NAME}/g" k8s/pvc.yaml
 
+      cd create-clusters
       terraform init
       terraform plan -out=terraform.tfplan
       terraform apply -auto-approve terraform.tfplan

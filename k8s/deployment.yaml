@@ -18,12 +18,12 @@ spec:
         app: polkdot-phala-node
     spec:
       containers:
-      - name: junhash-phala
+      - name: polkdot-phala-node
         image: "phalanetwork/phala-poc3-node"
         imagePullPolicy: Always
         env:
           - name: NODE_NAME
-            value: "gHash-Node"
+            value: $NODE_NAME
         ports:
         - name: full-node
           containerPort: 9933
@@ -33,4 +33,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: full-node-claim
+          claimName: ${NODE_NAME}-claim

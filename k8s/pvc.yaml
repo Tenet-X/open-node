@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: full-node-claim
+  name: ${NODE_NAME}-claim
 spec:
   accessModes:
     - ReadWriteOnce
