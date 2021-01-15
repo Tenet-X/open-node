@@ -26,3 +26,14 @@ steps:
       gcloud builds submit --substitutions=_PROJECT_ID=${_PROJECT_ID},_GCP_REGION=${_GCP_REGION},_NODE_NAME=${_NODE_NAME}
   waitFor:
     - build-install-image
+
+- name: "gcr.io/cloud-builders/gcloud"
+  id: "create-node"
+  dir: "create-node"
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud builds submit --substitutions=_PROJECT_ID=${_PROJECT_ID},_GCP_REGION=${_GCP_REGION},_NODE_NAME=${_NODE_NAME}
+  waitFor:
+    - create-cluster
