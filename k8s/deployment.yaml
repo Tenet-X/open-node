@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: NODE_NAME
-            value: $NODE_NAME
+            value: YOUR_NODE_NAME
         ports:
         - name: full-node
           containerPort: 9933
@@ -33,4 +33,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: ${NODE_NAME}-claim
+          claimName: YOUR_NODE_NAME-claim
