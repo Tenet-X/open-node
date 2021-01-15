@@ -12,8 +12,10 @@ gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_ID>
 
 export PROJECT_ID=<YOUR PROJECT ID>
+export GCP_REGION=<GCP REGION NAME>
+export NODE_NAME=<Phala NODE NAME>
 
-gcloud builds submit --substitutions=_PROJECT_ID=${PROJECT_ID}
+gcloud builds submit --substitutions=_PROJECT_ID=${PROJECT_ID},_GCP_REGION=${GCP_REGION},_NODE_NAME=${NODE_NAME}
 ```
 
 ### Use terraform
