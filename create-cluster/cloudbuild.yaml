@@ -13,6 +13,7 @@ steps:
 
       sed -i'' -e  "s/PROJECT_ID/${_PROJECT_ID}/g" terraform.tfvars
       sed -i'' -e  "s/GCP_REGION/${_GCP_REGION}/g" terraform.tfvars
+      sed -i'' -e  "s/CLUSTER_NAME/${_CLUSTER_NAME}/g" terraform.tfvars
 
       terraform init
       terraform plan -out=terraform.tfplan
