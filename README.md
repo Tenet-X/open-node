@@ -13,7 +13,7 @@ gcloud config set project <YOUR_PROJECT_ID>
 gcloud config set compute/region <GCP REGION>
 
 cd open-node
-./build.sh
+./setup.sh
 ```
 
 ### Use terraform
