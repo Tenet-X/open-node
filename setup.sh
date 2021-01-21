@@ -26,7 +26,7 @@ gcloud projects add-iam-policy-binding local-alignment-284902 \
 
 gcloud projects add-iam-policy-binding local-alignment-284902 \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
-     --role roles/compute.viewer
+     --role roles/compute.admin
 
 gcloud projects add-iam-policy-binding local-alignment-284902 \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
