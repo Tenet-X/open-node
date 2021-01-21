@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 read -t 30 -p "Please input Phala node name: " NODE_NAME
-echo "GCP project id: $NODE_NAME"
+echo "Full node name: $NODE_NAME"
 
 read -t 30 -p "Please input GKE cluster name: " CLUSTER_NAME
 echo "GKE cluster name: $CLUSTER_NAME"
