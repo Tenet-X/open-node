@@ -12,27 +12,27 @@ PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
 GCP_REGION=$(gcloud config get-value compute/region)
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
      --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/iam.serviceAccountTokenCreator
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/container.clusterAdmin
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/container.admin
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/compute.admin
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/iam.serviceAccountUser
 
-gcloud projects add-iam-policy-binding local-alignment-284902 \
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
      --role roles/compute.storageAdmin
 
