@@ -18,7 +18,7 @@ provider "google" {
 
 # VPC
 resource "google_compute_network" "vpc" {
-  name                    = "${var.project_id}-vpc"
+  name                    = "${var.cluster_name}-vpc"
   auto_create_subnetworks = "false"
 }
 
