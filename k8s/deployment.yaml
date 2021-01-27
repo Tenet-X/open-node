@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: polkdot-phala-node
+  name: YOUR_NODE_NAME
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: polkdot-phala-node
+      app: YOUR_NODE_NAME
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: polkdot-phala-node
+        app: YOUR_NODE_NAME
     spec:
       containers:
       - name: polkdot-phala-node
@@ -25,8 +25,10 @@ spec:
           - name: NODE_NAME
             value: YOUR_NODE_NAME
         ports:
-        - name: full-node
+        - name: p2p-port
           containerPort: 9933
+        - name: rpc-port
+          containerPort: 9944
         volumeMounts:
         - mountPath: /root/data/
           name: data
