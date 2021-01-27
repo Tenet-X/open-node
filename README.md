@@ -14,6 +14,9 @@ gcloud config set compute/region <GCP REGION>
 
 cd open-node
 ./setup.sh
+
+#add new node
+./add-node.sh
 ```
 
 ### Use terraform
