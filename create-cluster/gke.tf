@@ -15,13 +15,14 @@ variable "gke_num_nodes" {
 
 # GKE cluster
 resource "google_container_cluster" "primary" {
-  name     = var.cluster_name
-  location = var.region
+  name         = var.cluster_name
+  location     = var.region
+  node_version = "1.18"
+  min_master_version = "1.18"
 
   remove_default_node_pool = true
   initial_node_count       = 1
 
-  #network    = "default"
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
 
