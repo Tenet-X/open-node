@@ -31,26 +31,3 @@ terraform apply terraform.tfplan
 gcloud container clusters get-credentials $(terraform output kubernetes_cluster_name) --region $(terraform output region)
 kubectl apply -f k8s/
 ```
-## Add New Chain Node
-### Modify Key Config Args
-PVC Name mapping to Chain Node  
-open-node/k8s/pvc.yaml
-```
-metadata:
-  name: *****
-```
-Chain Node Name(Phala)   
-k8s/deployment.yaml
-```
-containers:
-    - name: junhash-phala
-    image: "phalanetwork/phala-poc3-node"
-    imagePullPolicy: Always
-    env:
-        - name: NODE_NAME
-        value: "******"
-```
-### Start New Node
-```
-kubectl apply -f k8s/
-```
