@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: YOUR_NODE_NAME
+  name: polkdot-phala-node
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: YOUR_NODE_NAME
+      app: polkdot-phala-node
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: YOUR_NODE_NAME
+        app: polkdot-phala-node
     spec:
       containers:
       - name: polkdot-phala-node
@@ -23,13 +23,11 @@ spec:
         imagePullPolicy: Always
         env:
           - name: NODE_NAME
-            value: YOUR_NODE_NAME
-          - name: EXTRA_OPTS
-            value: YOUR_EXTRA_OPTS
+            value: ghash-validator
         ports:
-        - name: p2p-port
+        - name: p2p
           containerPort: 9933
-        - name: rpc-port
+        - name: rpc
           containerPort: 9944
         volumeMounts:
         - mountPath: /root/data/
@@ -37,4 +35,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: YOUR_NODE_NAME-claim
+          claimName: validator-claim
