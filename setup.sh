@@ -8,6 +8,7 @@ echo "GKE cluster name: $CLUSTER_NAME"
 export NODE_NAME=$NODE_NAME
 export CLUSTER_NAME=$CLUSTER_NAME
 
+
 PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
 GCP_REGION=$(gcloud config get-value compute/region)
@@ -37,3 +38,4 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
      --role roles/compute.storageAdmin
 
 gcloud builds submit --substitutions=_PROJECT_ID=${PROJECT_ID},_GCP_REGION=${GCP_REGION},_NODE_NAME=${NODE_NAME},_CLUSTER_NAME=${CLUSTER_NAME}
+

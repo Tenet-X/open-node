@@ -31,6 +31,8 @@ spec:
           containerPort: 9933
         - name: rpc-port
           containerPort: 9944
+        - name: peer-port
+          containerPort: 30333
         volumeMounts:
         - mountPath: /root/data/
           name: data

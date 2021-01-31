@@ -15,3 +15,7 @@ spec:
     port: 9944
     protocol: TCP
     targetPort: 9944
+  - name: peer-port
+    port: 30333
+    protocol: TCP
+    targetPort: 30333
