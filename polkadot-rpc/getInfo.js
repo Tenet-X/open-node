@@ -6,7 +6,7 @@ require('dotenv').config();
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const typedefs = require('./typedefs.json');
 
-const WS_ENDPOINT = process.env.ENDPOINT || 'ws://35.229.59.163:9944';
+const WS_ENDPOINT = process.env.ENDPOINT || 'ws://127.0.0.1:9944';
 
 async function main () {
     const wsProvider = new WsProvider(WS_ENDPOINT);
