@@ -41,7 +41,8 @@ steps:
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/service.yaml
-
+      sleep 10
+      
       kubectl delete pod temp-rpc
 
       export VALIDATOR_NODE_SVC_NAME=$_NODE_NAME-service
