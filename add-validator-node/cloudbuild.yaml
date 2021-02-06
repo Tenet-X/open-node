@@ -25,7 +25,7 @@ steps:
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_FULL_NODE_IP/$${FULL_NODE_IP}/g" k8s/deployment-validator.yaml
 
-      kubectl run -it --name=temp-rpc -l=app-temp-rpc --image=gcr.io/g-hash-community/polkadot-rpc-client:v3 \
+      kubectl run -it temp-rpc -l app=temp-rpc --image=gcr.io/g-hash-community/polkadot-rpc-client:v3 \
       --env="ENDPOINT=ws://$$FULL_NODE_IP:9944"  \
       -- /usr/local/bin/node /workspace/getInfo.js
 
