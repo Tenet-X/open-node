@@ -17,9 +17,9 @@ async function main () {
     const networkState = await api.rpc.system.networkState();
     const syncStae = await api.rpc.system.syncState();
 
-    console.log({
+    console.log(
         networkState.peerId.toString()
-    });
+    );
 }
 
 main().catch(console.error).finally(() => process.exit());
