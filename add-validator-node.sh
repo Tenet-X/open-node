@@ -15,7 +15,7 @@ PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
 GCP_REGION=$(gcloud config get-value compute/region)
 
-gcloud builds submit --config=add-node/cloudbuild.yaml \
+gcloud builds submit --config=add-validator-node/cloudbuild.yaml \
 --substitutions=_PROJECT_ID=${PROJECT_ID}, \
 _GCP_REGION=${GCP_REGION}, \
 _NODE_NAME=${NODE_NAME}, \
