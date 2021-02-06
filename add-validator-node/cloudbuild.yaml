@@ -43,6 +43,7 @@ steps:
       kubectl apply -f k8s/service.yaml
 
       kubectl delete pod temp-rpc
+
       export VALIDATOR_NODE_SVC_NAME=$_NODE_NAME-service
       export VALIDATOR_NODE_IP=$(kubectl get svc $$VALIDATOR_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
@@ -55,6 +56,5 @@ steps:
       sleep 10
 
       export INSERT_OUTPUT=$(kubectl logs insert-temp-rpc)
-      echo $INSERT_OUTPUT
 
       kubectl delete pod insert-temp-rpc
