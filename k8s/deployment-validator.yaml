@@ -24,8 +24,11 @@ spec:
         env:
           - name: NODE_NAME
             value: YOUR_NODE_NAME
-          - name: EXTRA_OPTS
-            value: "--rpc-methods Unsafe"
+        args:
+          - --out-peers 0
+          - --reserved-only
+          - --reserved-nodes
+          - /ip4/YOUR_FULL_NODE_IP/tcp/30333/YOUR_PEER_ID
         ports:
         - name: p2p-port
           containerPort: 9933
