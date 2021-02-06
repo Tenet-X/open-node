@@ -11,7 +11,7 @@ options:
   substitution_option: 'ALLOW_LOOSE'
 steps:
 - name: "gcr.io/${_PROJECT_ID}/open-node-platform-installer"
-  id: "add-node"
+  id: "add-validator-node"
   entrypoint: 'bash'
   args:
     - '-xe'
@@ -25,11 +25,13 @@ steps:
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_FULL_NODE_IP/$${FULL_NODE_IP}/g" k8s/deployment-validator.yaml
 
-      kubectl run -it temp-rpc --image=gcr.io/g-hash-community/polkadot-rpc-client:v3 \
+      kubectl run -it --name=temp-rpc -l=app-temp-rpc --image=gcr.io/g-hash-community/polkadot-rpc-client:v3 \
       --env="ENDPOINT=ws://$$FULL_NODE_IP:9944"  \
       -- /usr/local/bin/node /workspace/getInfo.js
 
-      export PEER_ID=$(kubectl logs temp-rpc)
+      sleep 5
+
+      export PEER_ID=$(kubectl logs "$(kubectl get pod -l app=temp-rpc -o jsonpath='{.items[0].metadata.name}')")
 
       sed -i'' -e  "s/YOUR_PEER_IP/$${PEER_ID}/g" k8s/deployment-validator.yaml
 
