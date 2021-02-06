@@ -32,6 +32,14 @@ steps:
       --env="ENDPOINT=ws://$$FULL_NODE_IP:9944"  \
       -- /usr/local/bin/node /workspace/getInfo.js
 
+      # Wait for log to get peer id
+      log=""
+      while [ -z $log ]; do
+        echo "Waiting for log..."
+        log=$(kubectl logs temp-rpc")
+        [ -z "$log" ] && sleep 10
+      done
+
       sleep 10
 
       # Query log to get peer id
