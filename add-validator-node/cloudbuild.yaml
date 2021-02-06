@@ -40,7 +40,6 @@ steps:
         [ -z "$log" ] && sleep 10
       done
 
-      # Query log to get peer id
       export PEER_ID=$log
 
       sed -i'' -e  "s/YOUR_PEER_ID/$${PEER_ID}/g" k8s/deployment-validator.yaml
@@ -73,9 +72,16 @@ steps:
       --env="DRY_RUN=0" \
       -- /usr/local/bin/node /workspace/insertSessionKey.js
 
-      sleep 10
+      # Wait for log to get insertSessionKey result
+      insert_result=""
+      while [ -z $insert_result ]; do
+        echo "Waiting for log..."
+        insert_result=$(kubectl logs insert-temp-rpc)
+        [ -z "$insert_result" ] && sleep 10
+      done
 
-      export INSERT_OUTPUT=$(kubectl logs insert-temp-rpc)
+      export INSERT_OUTPUT=$insert_result
+      echo $INSERT_OUTPUT
 
       # Remove temporary pod
       kubectl delete pod insert-temp-rpc
