@@ -41,8 +41,15 @@ steps:
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/service.yaml
-      sleep 10
-      
+
+      external_ip=""
+      while [ -z $external_ip ]; do
+        echo "Waiting for end point..."
+        external_ip=$(kubectl get svc $$VALIDATOR_NODE_SVC_NAME --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
+        [ -z "$external_ip" ] && sleep 10
+      done
+      echo 'End point ready:' && echo $external_ip
+
       kubectl delete pod temp-rpc
 
       export VALIDATOR_NODE_SVC_NAME=$_NODE_NAME-service
@@ -58,4 +65,4 @@ steps:
 
       export INSERT_OUTPUT=$(kubectl logs insert-temp-rpc)
 
-      kubectl delete pod insert-temp-rpc
+      #kubectl delete pod insert-temp-rpc
