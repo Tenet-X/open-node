@@ -81,7 +81,6 @@ steps:
       done
 
       export INSERT_OUTPUT=$insert_result
-      echo $INSERT_OUTPUT
 
       # Remove temporary pod
       kubectl delete pod insert-temp-rpc
