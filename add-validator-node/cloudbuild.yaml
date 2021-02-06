@@ -19,12 +19,14 @@ steps:
     - |
       gcloud container clusters get-credentials ${_CLUSTER_NAME} --region ${_GCP_REGION}
 
+      # Get full node ip
       export FULL_NODE_SVC_NAME=$_FULL_NODE_NAME-service
       export FULL_NODE_IP=$(kubectl get svc $$FULL_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_FULL_NODE_IP/$${FULL_NODE_IP}/g" k8s/deployment-validator.yaml
 
+      # Invoke node getInfo.js to get peer id
       kubectl run -it temp-rpc -l app=temp-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
       --image-pull-policy=Always \
       --env="ENDPOINT=ws://$$FULL_NODE_IP:9944"  \
@@ -32,6 +34,7 @@ steps:
 
       sleep 10
 
+      # Query log to get peer id
       export PEER_ID=$(kubectl logs temp-rpc)
 
       sed -i'' -e  "s/YOUR_PEER_ID/$${PEER_ID}/g" k8s/deployment-validator.yaml
@@ -42,8 +45,10 @@ steps:
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/service.yaml
 
+      # Delete temporary pod
       kubectl delete pod temp-rpc
 
+      # Query loadBalancer ip for validator node
       export VALIDATOR_NODE_SVC_NAME=$_NODE_NAME-service
       external_ip=""
       while [ -z $external_ip ]; do
@@ -55,6 +60,7 @@ steps:
 
       export VALIDATOR_NODE_IP=$(kubectl get svc $$VALIDATOR_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
+      # Invoke node insertSessionKey
       kubectl run -it insert-temp-rpc -l app=insert-temp-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
       --image-pull-policy=Always \
       --env="ENDPOINT=ws://$$VALIDATOR_NODE_IP:9944"  \
@@ -65,4 +71,5 @@ steps:
 
       export INSERT_OUTPUT=$(kubectl logs insert-temp-rpc)
 
+      # Remove temporary pod
       kubectl delete pod insert-temp-rpc
