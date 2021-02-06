@@ -30,8 +30,8 @@ steps:
       -- /usr/local/bin/node /workspace/getInfo.js
 
       sleep 5
-
-      export PEER_ID=$(kubectl logs "$(kubectl get pod -l app=temp-rpc -o jsonpath='{.items[0].metadata.name}')")
+      export TEMP_POD_NAME=$(kubectl get pod -l app=temp-rpc -o jsonpath='{.items[0].metadata.name}')
+      export PEER_ID=$(kubectl logs $$TEMP_POD_NAME)
 
       sed -i'' -e  "s/YOUR_PEER_IP/$${PEER_ID}/g" k8s/deployment-validator.yaml
 
