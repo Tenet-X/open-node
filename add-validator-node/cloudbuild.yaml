@@ -41,3 +41,5 @@ steps:
 
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
+
+      kubectl delete pod temp-rpc
