@@ -40,8 +40,6 @@ steps:
         [ -z "$log" ] && sleep 10
       done
 
-      sleep 10
-
       # Query log to get peer id
       export PEER_ID=$log
 
