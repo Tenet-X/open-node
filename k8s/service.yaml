@@ -15,3 +15,6 @@ spec:
     port: 9944
     protocol: TCP
     targetPort: 9944
+  - name: mon-port
+    protocol: TCP
+    targetPort: 9615
