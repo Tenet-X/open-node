@@ -65,13 +65,14 @@ steps:
       echo 'LoadBalancer ready:' && echo $external_ip
 
       export VALIDATOR_NODE_IP=$(kubectl get svc $$VALIDATOR_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      export INSERT_SESSION_KEY=$_SESSION_KEY
 
       # Invoke node insertSessionKey
       kubectl run -it insert-temp-rpc -l app=insert-temp-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
       --image-pull-policy=Always \
       --env="ENDPOINT=ws://$$VALIDATOR_NODE_IP:9944"  \
       --env="DRY_RUN=0" \
-      --env="SESSINO_KEY=$$_SESSION_KEY" \
+      --env="SESSINO_KEY=$$INSERT_SESSION_KEY" \
       -- /usr/local/bin/node /workspace/insertSessionKey.js
 
       # Wait for log to get insertSessionKey result
