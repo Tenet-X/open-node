@@ -109,7 +109,7 @@ steps:
       export SECRET_NAME=$_NODE_NAME-secret
       export SECRET_DATA=$_NODE_NAME=$$KEY_DATA
 
-      kubectl create secret generic $$SECRET_NAME --from-literal=$_NODE_NAME=$$KEY_DATA
+      kubectl create secret generic $$SECRET_NAME --from-literal='$_NODE_NAME=$$KEY_DATA'
 
       # Remove temporary pod
       kubectl delete pod temp-validator-rpc
