@@ -102,7 +102,7 @@ steps:
         [ -z "$log" ] && sleep 10
       done
 
-      export VALIDATOR_PEER_ID=$log
+      export VALIDATOR_PEER_ID=$(echo -e $log)
 
       export KEY_RAW_DATA="{\"validatorId\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}"
       #export KEY_RAW_DATA="{\"validatorId\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\"}"
