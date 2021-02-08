@@ -98,7 +98,7 @@ steps:
       log=""
       while [ -z $log ]; do
         echo "Waiting for log..."
-        log=$(kubectl logs temp-validator-rpc -c temp-validator-rpc)
+        log=$(kubectl logs temp-validator-rpc)
         [ -z "$log" ] && sleep 10
       done
 
