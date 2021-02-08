@@ -89,7 +89,7 @@ steps:
       kubectl delete pod insert-temp-rpc
 
       # Invoke node getInfo.js to get peer id
-      kubectl run -it temp-validator-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
+      kubectl run -it temp-validator-rpc -l app=temp-validator-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
       --image-pull-policy=Always \
       --env="ENDPOINT=ws://$$VALIDATOR_NODE_IP:9944"  \
       -- /usr/local/bin/node /workspace/getInfo.js
