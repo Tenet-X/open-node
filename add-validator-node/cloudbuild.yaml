@@ -107,7 +107,7 @@ steps:
       export KEY_RAW_DATA="{\"validatorId\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}"
       #export KEY_RAW_DATA="{\"validatorId\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\"}"
       echo $$KEY_RAW_DATA
-      export KEY_DATA=$(echo -n $$KEY_RAW_DATA | base64)
+      export KEY_DATA=$(echo -e $$KEY_RAW_DATA | base64)
 
       export SECRET_NAME=$_NODE_NAME-secret
       export SECRET_DATA=$_NODE_NAME=$$KEY_DATA
