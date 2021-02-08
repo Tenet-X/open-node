@@ -107,9 +107,9 @@ steps:
       export KEY_DATA=$(echo "{\"peerid\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}" | base64)
 
       export SECRET_NAME=$_NODE_NAME-secret
-      export SECRET_DATA=$_NODE_NAME=$KEY_DATA
+      export SECRET_DATA=$_NODE_NAME=$$KEY_DATA
 
-      kubectl create secret generic $$SECRET_NAME --from-literal='$$SECRET_DATA'
+      kubectl create secret generic $$SECRET_NAME --from-literal=$_NODE_NAME=$$KEY_DATA
 
       # Remove temporary pod
       kubectl delete pod temp-validator-rpc
