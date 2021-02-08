@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app: YOUR_NODE_NAME
+        type: validator
     spec:
       containers:
       - name: polkdot-phala-node

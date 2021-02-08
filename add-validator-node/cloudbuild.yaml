@@ -41,9 +41,9 @@ steps:
         [ -z "$log" ] && sleep 10
       done
 
-      export PEER_ID=$log
+      export FULL_NODE_PEER_ID=$log
 
-      sed -i'' -e  "s/YOUR_PEER_ID/$${PEER_ID}/g" k8s/deployment-validator.yaml
+      sed -i'' -e  "s/YOUR_PEER_ID/$${FULL_NODE_PEER_ID}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/pvc.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/service.yaml
 
@@ -84,6 +84,30 @@ steps:
       done
 
       export INSERT_OUTPUT=$insert_result
+      export PUBLIC_KEY=$(echo $$INSERT_OUTPUT | jq '.opaqueSessionKey')
 
       # Remove temporary pod
       kubectl delete pod insert-temp-rpc
+
+      # Invoke node getInfo.js to get peer id
+      kubectl run -it temp-validator-rpc --generator=run-pod/v1 --image=gcr.io/g-hash-community/polkadot-rpc-client:v0.1 \
+      --image-pull-policy=Always \
+      --env="ENDPOINT=ws://$$VALIDATOR_NODE_IP:9944"  \
+      -- /usr/local/bin/node /workspace/getInfo.js
+
+      # Wait for log to get peer id
+      log=""
+      while [ -z $log ]; do
+        echo "Waiting for log..."
+        log=$(kubectl logs temp-validator-rpc)
+        [ -z "$log" ] && sleep 10
+      done
+
+      export VALIDATOR_PEER_ID=$log
+
+      export KEY_DATA=$(echo "{\"peerid\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}" | base64)
+
+      kubectl create secrets generic $$VALIDATOR_PEER_ID-secret --from-literal=$$VALIDATOR_PEER_ID=$$KEY_DATA
+
+      # Remove temporary pod
+      kubectl delete pod temp-validator-rpc
