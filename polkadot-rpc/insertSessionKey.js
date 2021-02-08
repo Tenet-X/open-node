@@ -47,10 +47,9 @@ async function main () {
         };
     }
 
-    console.log({
-        opaqueSessionKey,
-        rpcResult,
-    });
+    console.log(
+        opaqueSessionKey
+    );
 }
 
 main().catch(console.error).finally(() => process.exit());

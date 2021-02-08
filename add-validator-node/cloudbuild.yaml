@@ -83,8 +83,7 @@ steps:
         [ -z "$insert_result" ] && sleep 10
       done
 
-      export INSERT_OUTPUT=$insert_result
-      export PUBLIC_KEY=$(echo $$INSERT_OUTPUT | jq '.opaqueSessionKey')
+      export PUBLIC_KEY=$(echo $$insert_result)
 
       # Remove temporary pod
       kubectl delete pod insert-temp-rpc
@@ -107,7 +106,7 @@ steps:
 
       export KEY_DATA=$(echo "{\"peerid\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}" | base64)
 
-      kubectl create secrets generic $$VALIDATOR_PEER_ID-secret --from-literal=$$VALIDATOR_PEER_ID=$$KEY_DATA
+      kubectl create secrets generic $$VALIDATOR_PEER_ID-secret --from-literal='$$VALIDATOR_PEER_ID=$$KEY_DATA'
 
       # Remove temporary pod
       kubectl delete pod temp-validator-rpc
