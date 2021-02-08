@@ -104,7 +104,8 @@ steps:
 
       export VALIDATOR_PEER_ID=$log
 
-      export KEY_DATA=$(echo "{\"peerid\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}" | base64)
+      export KEY_RAW_DATA='{\"peerid\": \"$$VALIDATOR_PEER_ID\", \"seed\": \"$$INSERT_SESSION_KEY\", \"publickey\": \"$$PUBLIC_KEY\"}'
+      export KEY_DATA=$(echo -n $KEY_RAW_DATA | base64)
 
       export SECRET_NAME=$_NODE_NAME-secret
       export SECRET_DATA=$_NODE_NAME=$$KEY_DATA
