@@ -40,8 +40,7 @@ spec:
           - --rpc-port=9933
           - --ws-port=9944
           - --prometheus-external
-          - --out-peers
-          - 0
+          - --out-peers=0
           - --reserved-only
           - --reserved-nodes
           - /ip4/YOUR_FULL_NODE_IP/tcp/30333/p2p/YOUR_PEER_ID
