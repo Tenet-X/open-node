@@ -29,9 +29,11 @@ steps:
       sed -i'' -e  "s/YOUR_PEER_ID/$${FULL_NODE_PEER_ID}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/pvc.yaml
-
+      sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/service.yaml
+      
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
+      kubectl apply -f k8s/service.yaml
 
       # Wait for validator pod to get ready
       validator_pod_name=""
