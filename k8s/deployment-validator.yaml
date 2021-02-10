@@ -25,8 +25,25 @@ spec:
         env:
           - name: NODE_NAME
             value: YOUR_NODE_NAME
-          - name: EXTRA_OPTS
-            value: "--rpc-methods Unsafe --out-peers 0 --reserved-only --reserved-nodes /ip4/YOUR_FULL_NODE_IP/tcp/30333/p2p/YOUR_PEER_ID"
+          # - name: EXTRA_OPTS
+          #   value: "--rpc-methods Unsafe --out-peers 0 --reserved-only --reserved-nodes /ip4/YOUR_FULL_NODE_IP/tcp/30333/p2p/YOUR_PEER_ID"
+        command:
+          - ./phala-node
+          - --chain=phala
+          - --base-path
+          - /root/data
+          - --database=paritydb
+          - --name
+          - $(NODE_NAME)
+          - --pruning=archive
+          - --rpc-port=9933
+          - --ws-port=9944
+          - --prometheus-external
+          - --out-peers
+          - 0
+          - --reserved-only
+          - --reserved-nodes
+          - /ip4/YOUR_FULL_NODE_IP/tcp/30333/p2p/YOUR_PEER_ID
         ports:
         - name: p2p-port
           containerPort: 9933
@@ -37,6 +54,14 @@ spec:
         volumeMounts:
         - mountPath: /root/data/
           name: data
+      - name: polkdot-rpc
+        image: "gcr.io/g-hash-community/polkadot-rpc-client:v0.1"
+        imagePullPolicy: Always
+        env:
+          - name: ENDPOINT
+            value: ws://localhost:9944
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "/usr/local/bin/node /workspace/getInfo.js; while true; do sleep 10; done" ]
       volumes:
       - name: data
         persistentVolumeClaim:

@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: polkdot-full-node
+  name: phala-2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: polkdot-full-node
+      app: phala-2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,25 +15,47 @@ spec:
   template:
     metadata:
       labels:
-        app: polkdot-full-node
+        app: phala-2
+        type: full
     spec:
       containers:
-      - name: polkdot-full-node
-        image: "chevdor/polkadot:0.3.14"
-        args:
-        - polkadot
-        - --chain
-        - alex
-        - --name
-        - liufan-gke
+      - name: polkdot-phala-node
+        image: "phalanetwork/phala-poc3-node"
         imagePullPolicy: Always
+        env:
+          - name: NODE_NAME
+            value: phala-2
+        command:
+          - ./phala-node
+          - --chain=phala
+          - --base-path
+          - /root/data
+          - --database=paritydb
+          - --name
+          - $(NODE_NAME)
+          - --pruning=archive
+          - --rpc-port=9933
+          - --ws-port=9944
+          - --prometheus-external
         ports:
-        - name: full-node
+        - name: p2p-port
           containerPort: 9933
+        - name: rpc-port
+          containerPort: 9944
+        - name: mon-port
+          containerPort: 9615
         volumeMounts:
         - mountPath: /root/data/
           name: data
+      - name: polkdot-rpc
+        image: "gcr.io/g-hash-community/polkadot-rpc-client:v0.1"
+        imagePullPolicy: Always
+        env:
+          - name: ENDPOINT
+            value: ws://localhost:9944
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "/usr/local/bin/node /workspace/getInfo.js; while true; do sleep 10; done" ]
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: full-node-claim
+          claimName: phala-2-claim

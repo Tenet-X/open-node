@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: rpc-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 9944
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rpc-v-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - rpc-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: phala-2-service
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: phala-2-service-route
+spec:
+  hosts:
+  - phala-2-service
+  http:
+  - headers:
+      request:
+        set:
+          Host: localhost
+    route:
+    - destination:
+        host: phala-2-service.default.svc.cluster.local
