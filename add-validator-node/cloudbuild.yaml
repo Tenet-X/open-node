@@ -20,7 +20,7 @@ steps:
     - |
       gcloud container clusters get-credentials ${_CLUSTER_NAME} --region ${_GCP_REGION}
 
-      # # Get full node ip
+      # Get full node ip & peer id
       export FULL_NODE_SVC_NAME=$_FULL_NODE_NAME-service
       export FULL_NODE_IP=$(kubectl get svc $$FULL_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
       export FULL_NODE_PEER_ID=$(kubectl logs $(kubectl get pod -l type=full -o jsonpath='{.items[0].metadata.name}') -c polkdot-rpc)
@@ -33,13 +33,26 @@ steps:
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
 
-      # //TODO: remove sleep
+      # Wait for validator pod to get ready
+      validator_pod_name=""
+      while [ -z $validator_pod_name ]; do
+        echo "Waiting for validator pod..."
+        validator_pod_name=$(kubectl get pods -l app=$_NODE_NAME -o jsonpath='{range .items[?(.status.phase=="Running")]}{.metadata.name}{ "\n"}{end}')
+        [ -z "$validator_pod_name" ] && sleep 10
+      done
 
-      sleep 20
+      sleep 10
 
-      export PUBLIC_KEY=$(kubectl exec $(kubectl get pod -l app=$_NODE_NAME -o jsonpath='{.items[0].metadata.name}') -c  polkdot-rpc -- /bin/sh -c "ENDPOINT=ws://localhost:9944 DRY_RUN=0 SESSINO_KEY=$_SESSION_KEY /usr/local/bin/node /workspace/insertSessionKey.js")
+      export PUBLIC_KEY=$(kubectl exec $$validator_pod_name \
+      -c  polkdot-rpc \
+      -- /bin/sh -c \
+      "ENDPOINT=ws://localhost:9944 \
+      DRY_RUN=0 \
+      SESSINO_KEY=$_SESSION_KEY \
+      /usr/local/bin/node \
+      /workspace/insertSessionKey.js")
 
-      log=$(kubectl logs $(kubectl get pod -l app=$_NODE_NAME -o jsonpath='{.items[0].metadata.name}') -c polkdot-rpc)
+      log=$(kubectl exec $$validator_pod_name -c  polkdot-rpc -- /bin/sh -c "ENDPOINT=ws://localhost:9944 /usr/local/bin/node /workspace/getInfo.js")
 
       export VALIDATOR_PEER_ID=$(echo -e $log | sed 's/\r$//')
 

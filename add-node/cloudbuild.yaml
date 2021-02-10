@@ -20,8 +20,8 @@ steps:
 
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/pvc.yaml
-      sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/service.yaml
+      # sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/service.yaml
 
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/deployment.yaml
-      kubectl apply -f k8s/service.yaml
+      # kubectl apply -f k8s/service.yaml
