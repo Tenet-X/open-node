@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       app: YOUR_NODE_NAME
+      type: validator
   strategy:
     rollingUpdate:
       maxSurge: 1
