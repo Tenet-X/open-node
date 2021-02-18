@@ -30,7 +30,7 @@ steps:
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/deployment-validator.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/pvc.yaml
       sed -i'' -e  "s/YOUR_NODE_NAME/${_NODE_NAME}/g" k8s/service.yaml
-      
+
       kubectl apply -f k8s/deployment-validator.yaml
       kubectl apply -f k8s/pvc.yaml
       kubectl apply -f k8s/service.yaml
@@ -65,3 +65,10 @@ steps:
       export SECRET_DATA=$_NODE_NAME=$$KEY_DATA
 
       kubectl create secret generic $$SECRET_NAME --from-literal="$$SECRET_DATA"
+
+      # Update full node with reserved nodes
+      # Get validator node ip & peer id
+      export VALIDATOR_NODE_SVC_NAME=$_NODE_NAME-service
+      export VALIDATOR_NODE_IP=$(kubectl get svc $$VALIDATOR_NODE_SVC_NAME -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      kubectl exec $(kubectl get pod -l app=$_FULL_NODE_NAME -o jsonpath='{.items[0].metadata.name}') -c polkdot-rpc -- /bin/sh -c "ENDPOINT=ws://localhost:9944 ADD=/ip4/$$VALIDATOR_NODE_IP/tcp/30333/p2p/$$VALIDATOR_PEER_ID /usr/local/bin/node /workspace/updateReservedNodes.js"
