@@ -57,6 +57,11 @@ spec:
             value: ws://localhost:9944
         command: [ "/bin/sh", "-c", "--" ]
         args: [ "/usr/local/bin/node /workspace/getInfo.js; while true; do sleep 10; done" ]
+      - name: substrate-api-sidecar
+        image: "docker.io/parity/substrate-api-sidecar:latest"
+        ports:
+        - name: rest-api-port
+          containerPort: 8080
       volumes:
       - name: data
         persistentVolumeClaim:
