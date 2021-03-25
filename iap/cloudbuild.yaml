@@ -20,11 +20,11 @@ steps:
     - |
       BRAND_NAME=$(gcloud alpha iap oauth-brands list --format='value(name)')
 
-      # if [ $$BRAND_NAME="" ]
-      # then
-      #   gcloud alpha iap oauth-brands create --application_title="IAP Brand" --support_email=$_EMAIL
-      #   BRAND_NAME=$(gcloud alpha iap oauth-brands list --format='value(name)')
-      # fi
+      if [ -z $$BRAND_NAME ]
+      then
+        gcloud alpha iap oauth-brands create --application_title="IAP Brand" --support_email=$_EMAIL
+        BRAND_NAME=$(gcloud alpha iap oauth-brands list --format='value(name)')
+      fi
 
       OAUTH_CLIENT=$(gcloud alpha iap oauth-clients create $$BRAND_NAME --display_name=iapclient1 --format json)
 
