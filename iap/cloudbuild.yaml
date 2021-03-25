@@ -31,5 +31,8 @@ steps:
       CLIENT_ID=$(echo $$OAUTH_CLIENT | jq -r ".name")
       SECRET=$(echo $$OAUTH_CLIENT | jq -r ".secret")
 
+      gcloud projects add-iam-policy-binding flius-workshop \
+      --member=user:$_EMAIL --role=roles/iap.httpsResourceAccessor
+
       gcloud compute backend-services update $_BACKEND_SERVICE_NAME --global \
       --iap=enabled,oauth2-client-id=$$CLIENT_ID,oauth2-client-secret=$$SECRET
