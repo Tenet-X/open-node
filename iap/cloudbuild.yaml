@@ -1,0 +1,35 @@
+timeout: 3600s # 1-hr
+tags:
+  - open-node-platform
+substitutions:
+  _PROJECT_ID: ${PROJECT_ID}
+  _GCP_REGION: ${GCP_REGION}
+  # _NODE_NAME: ${NODE_NAME}
+  # _CLUSTER_NAME: ${CLUSTER_NAME}
+  _BACKEND_SERVICE_NAME: ${BACKEND_SERVICE_NAME}
+  _EMAIL: ${EMAIL}
+options:
+  substitution_option: 'ALLOW_LOOSE'
+steps:
+- name: "gcr.io/${_PROJECT_ID}/open-node-platform-installer"
+  id: "enable-iap"
+  entrypoint: 'bash'
+  args:
+    - '-xe'
+    - '-c'
+    - |
+      BRAND_NAME=$(gcloud alpha iap oauth-brands list --format='value(name)')
+
+      if [ $$BRAND_NAME="" ]
+      then
+        gcloud alpha iap oauth-brands create --application_title="IAP Brand" --support_email=$(_EMAIL)
+        BRAND_NAME=$(gcloud alpha iap oauth-brands list --format='value(name)')
+      fi
+
+      OAUTH_CLIENT=$(gcloud alpha iap oauth-clients create $$BRAND_NAME --display_name=iapclient1 --format json)
+
+      CLIENT_ID=$(echo $$OAUTH_CLIENT | jq -r ".name")
+      SECRET=$(echo $$OAUTH_CLIENT | jq -r ".secret")
+
+      gcloud compute backend-services update $_BACKEND_SERVICE_NAME --global \
+      --iap=enabled,oauth2-client-id=$$CLIENT_ID,oauth2-client-secret=$$SECRET
